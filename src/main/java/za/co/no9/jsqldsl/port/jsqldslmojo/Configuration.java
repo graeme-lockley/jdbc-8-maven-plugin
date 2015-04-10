@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 public class Configuration {
-    private static final String SCHEMA_RESOURCE_NAME = "/xsd/jsqldsl-8-configuration.xsd";
+    private static final String SCHEMA_RESOURCE_NAME = "/xsd/jdbc-8-maven-plugin-configuration.xsd";
 
     private File configurationFile;
     private za.co.no9.jsqldsl.port.jsqldslmojo.configuration.Configuration xmlConfiguration;

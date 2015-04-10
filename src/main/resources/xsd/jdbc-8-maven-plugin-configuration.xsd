@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:configuration="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
-           targetNamespace="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
+           xmlns:configuration="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd"
+           targetNamespace="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd"
            elementFormDefault="qualified">
     <xs:element name="configuration">
         <xs:complexType>

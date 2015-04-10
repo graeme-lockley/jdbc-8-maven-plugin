@@ -78,7 +78,7 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <goalPrefix>jsqldsl</goalPrefix>
+                    <goalPrefix>jdbc-8</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
@@ -111,7 +111,7 @@
                     <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
                     <packageName>za.co.no9.jsqldsl.port.jsqldslmojo.configuration</packageName>
                     <outputDirectory>${basedir}/target/generated-sources/jaxb2</outputDirectory>
-                    <schemaFiles>jsqldsl-8-configuration.xsd</schemaFiles>
+                    <schemaFiles>jdbc-8-maven-plugin-configuration.xsd</schemaFiles>
                 </configuration>
             </plugin>
         </plugins>

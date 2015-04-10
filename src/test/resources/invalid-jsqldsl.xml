@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration xmlns="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
+<configuration xmlns="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd">
+               xsi:schemaLocation="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd">
     <source>
         <jdbcs>
             <driver>org.h2.Driver</driver>
