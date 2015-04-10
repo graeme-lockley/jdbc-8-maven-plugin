@@ -1,6 +1,5 @@
 package za.co.no9.jsqldsl.port.jsqldslmojo;
 
-import freemarker.template.TemplateException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -24,16 +23,16 @@ public class JSQLDSLMojo extends AbstractMojo {
 
         try {
             processConfiguration(configurationFile);
-        } catch (ConfigurationException | SQLException | TemplateException | GenerationException ex) {
+        } catch (ConfigurationException | SQLException | GenerationException ex) {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
     }
 
-    protected void processConfiguration(File configurationFile) throws ConfigurationException, TemplateException, GenerationException, SQLException {
+    protected void processConfiguration(File configurationFile) throws ConfigurationException, GenerationException, SQLException {
         processConfiguration(Configuration.from(configurationFile));
     }
 
-    protected void processConfiguration(Configuration configuration) throws ConfigurationException, TemplateException, GenerationException, SQLException {
+    protected void processConfiguration(Configuration configuration) throws ConfigurationException, GenerationException, SQLException {
         try (Connection connection = configuration.getJDBCConnection()) {
             TableFilter tableFilter = configuration.getTableFilter();
 
