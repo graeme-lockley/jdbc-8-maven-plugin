@@ -1,0 +1,43 @@
+- new-handler: za.co.no9.jfixture.JDBCHandler
+
+- jdbc-connect:
+    driver: org.h2.Driver
+    url: 'jdbc:h2:mem:'
+    username: sa
+    autoclose: false
+
+- jdbc-create-table:
+    name: books
+    fields:
+      id: 'bigint not null primary key auto_increment'
+      name: 'varchar(50)'
+      author_id: 'bigint not null'
+      creation_date: 'timestamp not null'
+
+- jdbc-create-table:
+    name: authors
+    fields:
+      id: 'bigint not null primary key auto_increment'
+      first_name: 'varchar(50)'
+      surname: 'varchar(50)'
+      creation_date: 'timestamp not null'
+
+- jdbc-create-table:
+    name: genres
+    fields:
+      id: 'bigint not null primary key auto_increment'
+      name: 'varchar(50)'
+      creation_date: 'timestamp not null'
+
+- jdbc-create-table:
+    name: book_genres
+    fields:
+      book_id: 'bigint not null'
+      genre_id: 'bigint not null'
+
+- jdbc-sql:
+   - alter table books add constraint books_fk1 foreign key (author_id, name) references authors(id, first_name)
+   - alter table books add constraint books_fk2 foreign key (author_id, name) references authors(id, surname)
+   - alter table book_genres add primary key (book_id, genre_id)
+   - alter table book_genres add constraint book_genres_fk1 foreign key (book_id) references books(id)
+   - alter table book_genres add constraint book_genres_fk2 foreign key (genre_id) references genres(id)

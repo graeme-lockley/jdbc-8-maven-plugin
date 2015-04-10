@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd">
+    <source>
+        <jdbc>
+            <driver>org.h2.Driver</driver>
+            <url>jdbc:h2:mem:</url>
+            <username>sa</username>
+        </jdbc>
+
+        <tables>
+            <include>
+                <schema>PUBLIC</schema>
+            </include>
+            <exclude>
+                <schema>PUBLIC</schema>
+                <table>bob</table>
+            </exclude>
+        </tables>
+    </source>
+
+    <targets>
+        <target>
+            <handler>za.co.no9.jsqldsl.tools.HandlerTest</handler>
+            <destination>../generated-test-sources/jsqldsl</destination>
+            <properties>
+                <property>
+                    <name>package</name>
+                    <value>x.y.z</value>
+                </property>
+                <property>
+                    <name>driver</name>
+                    <value>za.co.no9.jsqldsl.drivers.H2</value>
+                </property>
+            </properties>
+        </target>
+    </targets>
+</configuration>

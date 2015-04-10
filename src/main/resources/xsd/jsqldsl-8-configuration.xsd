@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:configuration="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
+           targetNamespace="http://www.no9.co.za/xsd/jsqldsl-8-configuration.xsd"
+           elementFormDefault="qualified">
+    <xs:element name="configuration">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="source" type="configuration:SourceType"/>
+                <xs:element name="targets" type="configuration:TargetTypes"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="SourceType">
+        <xs:sequence>
+            <xs:element name="jdbc" type="configuration:JdbcType"/>
+            <xs:element name="tables" type="configuration:TablesType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="JdbcType">
+        <xs:sequence>
+            <xs:element name="driver" type="xs:string"/>
+            <xs:element name="url" type="xs:string"/>
+            <xs:element name="username" type="xs:string" minOccurs="0"/>
+            <xs:element name="password" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TablesType">
+        <xs:sequence>
+            <xs:element name="include" type="configuration:TablePatternType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="exclude" type="configuration:TablePatternType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TablePatternType">
+        <xs:sequence>
+            <xs:element name="schema" type="xs:string" minOccurs="0"/>
+            <xs:element name="table" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TargetTypes">
+        <xs:sequence>
+            <xs:element name="target" type="configuration:TargetType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TargetType">
+        <xs:sequence>
+            <xs:element name="handler" type="xs:string"/>
+            <xs:element name="destination" type="xs:string"/>
+            <xs:element name="properties" type="configuration:PropertiesType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PropertiesType">
+        <xs:sequence>
+            <xs:element name="property" type="configuration:PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PropertyType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
