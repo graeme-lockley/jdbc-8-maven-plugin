@@ -109,7 +109,7 @@
                 </executions>
                 <configuration>
                     <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
-                    <packageName>za.co.no9.jsqldsl.port.jsqldslmojo.configuration</packageName>
+                    <packageName>za.co.no9.jdbcdry.port.jsqldslmojo.configuration</packageName>
                     <outputDirectory>${basedir}/target/generated-sources/jaxb2</outputDirectory>
                     <schemaFiles>jdbc-8-maven-plugin-configuration.xsd</schemaFiles>
                 </configuration>

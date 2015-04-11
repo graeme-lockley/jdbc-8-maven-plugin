@@ -22,7 +22,7 @@
 
     <targets>
         <target>
-            <handler>za.co.no9.jsqldsl.tools.HandlerTest</handler>
+            <handler>za.co.no9.jdbcdry.tools.HandlerTest</handler>
             <destination>../generated-test-sources/jsqldsl</destination>
             <properties>
                 <property>
@@ -31,7 +31,7 @@
                 </property>
                 <property>
                     <name>driver</name>
-                    <value>za.co.no9.jsqldsl.drivers.H2</value>
+                    <value>za.co.no9.jdbcdry.drivers.H2</value>
                 </property>
             </properties>
         </target>

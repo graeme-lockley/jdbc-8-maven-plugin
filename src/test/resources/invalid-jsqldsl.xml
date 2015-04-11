@@ -19,7 +19,7 @@
     <targets>
         <target>
             <package>x.y.z</package>
-            <driver>za.co.no9.jsqldsl.drivers.H2</driver>
+            <driver>za.co.no9.jdbcdry.drivers.H2</driver>
         </target>
     </targets>
 </configuration>
