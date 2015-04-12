@@ -7,7 +7,7 @@
     <groupId>za.co.no9</groupId>
     <artifactId>jdbc-8-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>8.0</version>
+    <version>8.1-SNAPSHOT</version>
     <name>Maven JDBC Plugin</name>
     <description>A maven plugin that supports artifact generation off of a database schema.</description>
     <url>https://github.com/graeme-lockley/jdbc-8-maven-plugin</url>
