@@ -7,7 +7,7 @@ This project is a JDBC maven plugin which allows handlers to be invoked to gener
 The intention is that the handlers would interrogate the database's schema and produce either a software artifact or an
 artifact for human consumption.  Two projects that illustrate how to use this plugin are:
  
-- schemadoc-8-handler: generates a schema diagram based on the underlying tables and foreign key structures.
+- [schemadoc-8-handler](https://github.com/graeme-lockley/schemadoc-8-handler): generates a schema diagram based on the underlying tables and foreign key structures.
 - jsqldsl-8-handler: generates Java classes to describe the table structure and foreign key relationships to support a 
 type-safe JDBC interface into the associated database.
 
