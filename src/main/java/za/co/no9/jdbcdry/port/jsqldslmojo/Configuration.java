@@ -1,6 +1,7 @@
 package za.co.no9.jdbcdry.port.jsqldslmojo;
 
 import org.xml.sax.SAXException;
+import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.DBSearchType;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.JdbcType;
 
 import javax.xml.XMLConstants;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.Optional;
 
 public class Configuration {
     private static final String SCHEMA_RESOURCE_NAME = "/xsd/jdbc-8-maven-plugin-configuration.xsd";
@@ -89,5 +91,21 @@ public class Configuration {
 
     public TableFilter getTableFilter() {
         return new TableFilter(xmlConfiguration.getSource().getTables().getInclude(), xmlConfiguration.getSource().getTables().getExclude());
+    }
+
+    public Optional<String> getDBCatalogue() {
+        return Optional.ofNullable(getDbSearch() == null ? null : getDbSearch().getCatalog());
+    }
+
+    public Optional<String> getDBSchemaPattern() {
+        return Optional.ofNullable(getDbSearch() == null ? null : getDbSearch().getSchemaPattern());
+    }
+
+    public Optional<String> getDBTablePattern() {
+        return Optional.ofNullable(getDbSearch() == null ? null : getDbSearch().getTablePattern());
+    }
+
+    private DBSearchType getDbSearch() {
+        return xmlConfiguration.getSource().getTables().getDbSearch();
     }
 }
