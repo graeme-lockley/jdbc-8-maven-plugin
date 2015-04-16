@@ -30,8 +30,17 @@
 
     <xs:complexType name="TablesType">
         <xs:sequence>
+            <xs:element name="db-search" type="configuration:DBSearchType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="include" type="configuration:TablePatternType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="exclude" type="configuration:TablePatternType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DBSearchType">
+        <xs:sequence>
+            <xs:element name="catalog" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="schema-pattern" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="table-pattern" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
