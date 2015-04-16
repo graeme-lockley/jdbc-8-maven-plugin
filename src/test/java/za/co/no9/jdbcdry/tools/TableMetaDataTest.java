@@ -55,10 +55,29 @@ public class TableMetaDataTest {
         includeType.setSchema("PUBLIC");
         TableFilter tableFilter = new TableFilter(Collections.singletonList(includeType), Collections.EMPTY_LIST);
 
-        List<TableMetaData> tableMetaDatas = DatabaseMetaData.from(new H2(), connection).allTables().stream()
+        List<TableMetaData> tableMetaDatas = DatabaseMetaData.from(getDbDriver(), connection).allTables().stream()
                 .filter(tableFilter::filter)
                 .collect(Collectors.toList());
         assertEquals(4, tableMetaDatas.size());
+    }
+
+    private H2 getDbDriver() {
+        return new H2() {
+            @Override
+            public Optional<String> getDBCatalogue() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<String> getDBSchemaPattern() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<String> getDBTablePattern() {
+                return Optional.empty();
+            }
+        };
     }
 
     @Test
@@ -68,7 +87,7 @@ public class TableMetaDataTest {
         includeType.setTable("BOOKS");
         TableFilter tableFilter = new TableFilter(Collections.singletonList(includeType), Collections.EMPTY_LIST);
 
-        Optional<TableMetaData> optBookMetaData = DatabaseMetaData.from(new H2(), connection).allTables().stream()
+        Optional<TableMetaData> optBookMetaData = DatabaseMetaData.from(getDbDriver(), connection).allTables().stream()
                 .filter(tableFilter::filter)
                 .findFirst();
         assertTrue(optBookMetaData.isPresent());

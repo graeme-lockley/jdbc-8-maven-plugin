@@ -1,5 +1,6 @@
 package za.co.no9.jdbcdry.drivers;
 
+import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
 import za.co.no9.jdbcdry.tools.*;
 
 import java.sql.Connection;
@@ -8,6 +9,13 @@ import java.sql.SQLException;
 import java.util.*;
 
 public abstract class DBDriverParent implements DBDriver {
+    private Configuration configuration;
+
+    @Override
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     @Override
     public DatabaseMetaData databaseMetaData(Connection connection) {
         return DatabaseMetaData.from(this, connection);
@@ -89,4 +97,19 @@ public abstract class DBDriverParent implements DBDriver {
     }
 
     protected abstract FieldMetaData fromColumnsResultSet(Set<String> primaryKeys, ResultSet resultSet) throws SQLException;
+
+    @Override
+    public Optional<String> getDBCatalogue() {
+        return configuration.getDBCatalogue();
+    }
+
+    @Override
+    public Optional<String> getDBSchemaPattern() {
+        return configuration.getDBSchemaPattern();
+    }
+
+    @Override
+    public Optional<String> getDBTablePattern() {
+        return configuration.getDBTablePattern();
+    }
 }
