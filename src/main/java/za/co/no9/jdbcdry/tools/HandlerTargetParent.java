@@ -23,7 +23,9 @@ public abstract class HandlerTargetParent {
 
     public DBDriver getDBDriver() throws ConfigurationException {
         try {
-            return (DBDriver) Class.forName(getDriverClassName()).newInstance();
+            DBDriver dbDriver = (DBDriver) Class.forName(getDriverClassName()).newInstance();
+            dbDriver.setConfiguration(target.getConfiguration());
+            return dbDriver;
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
             throw new ConfigurationException("Unable to instantiate the DB handler " + getDriverClassName() + ".", ex);
         } catch (IllegalArgumentException ex) {
