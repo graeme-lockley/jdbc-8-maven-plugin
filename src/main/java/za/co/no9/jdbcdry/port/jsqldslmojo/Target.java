@@ -47,4 +47,8 @@ public final class Target {
         }
         return Optional.empty();
     }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 }
