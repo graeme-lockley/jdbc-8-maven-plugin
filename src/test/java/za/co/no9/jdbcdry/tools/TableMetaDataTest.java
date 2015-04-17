@@ -51,9 +51,7 @@ public class TableMetaDataTest {
 
     @Test
     public void should_list_all_tables() throws Exception {
-        TablePatternType includeType = new TablePatternType();
-        includeType.setSchema("PUBLIC");
-        TableFilter tableFilter = new TableFilter(Collections.singletonList(includeType), Collections.EMPTY_LIST);
+        TableFilter tableFilter = new TableFilter(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
 
         List<TableMetaData> tableMetaDatas = DatabaseMetaData.from(getDbDriver(), connection).allTables().stream()
                 .filter(tableFilter::filter)
@@ -70,7 +68,7 @@ public class TableMetaDataTest {
 
             @Override
             public Optional<String> getDBSchemaPattern() {
-                return Optional.empty();
+                return Optional.of("PUBLIC");
             }
 
             @Override
