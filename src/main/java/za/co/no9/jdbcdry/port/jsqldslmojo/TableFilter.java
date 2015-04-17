@@ -6,6 +6,7 @@ import za.co.no9.jdbcdry.tools.TableName;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -16,8 +17,12 @@ public class TableFilter {
     private final List<CompiledTablePattern> excludes;
 
     public TableFilter(List<TablePatternType> includes, List<TablePatternType> excludes) {
-        this.includes = compile(includes);
+        this.includes = compile(includes.size() == 0 ? allIncludes() : includes);
         this.excludes = compile(excludes);
+    }
+
+    private List<TablePatternType> allIncludes() {
+        return Collections.singletonList(new TablePatternType());
     }
 
     private List<CompiledTablePattern> compile(List<TablePatternType> tablePatternTypes) {
