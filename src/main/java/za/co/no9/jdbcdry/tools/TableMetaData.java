@@ -67,4 +67,8 @@ public class TableMetaData {
         }
         return Optional.empty();
     }
+
+    public String toString() {
+        return "{name: " + tableName + ", fields: " + fields() + ", foreign_keys: " + Arrays.toString(foreignKeys()) + "}";
+    }
 }
