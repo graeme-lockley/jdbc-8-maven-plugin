@@ -25,14 +25,8 @@
             <handler>za.co.no9.jdbcdry.tools.HandlerTest</handler>
             <destination>../generated-test-sources/jsqldsl</destination>
             <properties>
-                <property>
-                    <name>package</name>
-                    <value>x.y.z</value>
-                </property>
-                <property>
-                    <name>driver</name>
-                    <value>za.co.no9.jdbcdry.drivers.H2</value>
-                </property>
+                <property name="package" value="x.y.z"/>
+                <property name="driver" value="za.co.no9.jdbcdry.drivers.H2"/>
             </properties>
         </target>
     </targets>
