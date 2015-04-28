@@ -20,7 +20,7 @@
         </tables>
 
         <foreign-keys>
-            <foreign-key from-table="PUBLIC.BOOKS" from-name="BOOKS_FK1" from-fields="AUTHOR_ID" to-table="PUBLIC.AUTHORS" to-fields="ID"/>
+            <foreign-key from-table="UNNAMED.PUBLIC.BOOKS" from-name="BOOKS_FK1" from-fields="AUTHOR_ID" to-table="UNNAMED.PUBLIC.AUTHORS" to-fields="ID"/>
         </foreign-keys>
     </source>
 

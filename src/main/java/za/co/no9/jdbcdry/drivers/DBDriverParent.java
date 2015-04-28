@@ -1,12 +1,15 @@
 package za.co.no9.jdbcdry.drivers;
 
 import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
+import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeyType;
 import za.co.no9.jdbcdry.tools.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class DBDriverParent implements DBDriver {
     private Configuration configuration;
@@ -63,7 +66,65 @@ public abstract class DBDriverParent implements DBDriver {
             }
         }
 
+        resolveManualForeignConstraints(result, tables, tableMetaData);
+
         return tableMetaData.constraints(result);
+    }
+
+    protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
+        for (Object objForeignKeyType : configuration.getManualForeignKeys().stream().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).toArray()) {
+            foreignKeys.add(resolveForeignKey(tables, (ForeignKeyType) objForeignKeyType));
+        }
+    }
+
+    protected boolean namesEqual(String filterFromName, String tableName) {
+        return filterFromName.equals(tableName);
+    }
+
+    private ForeignKey resolveForeignKey(Map<TableName, TableMetaData> tables, ForeignKeyType foreignKeyType) {
+        String[] fromKeys = foreignKeyType.getFromFields().split(",");
+        String[] toKeys = foreignKeyType.getToFields().split(",");
+
+        if (fromKeys.length != toKeys.length) {
+            throw new IllegalArgumentException("Manual foreign keys do not have the same number of fields: " + foreignKeyType.toString());
+        }
+
+        return ForeignKey.from(
+                resolveForeignKeyEdge(
+                        foreignKeyType.getFromName(),
+                        tables,
+                        foreignKeyType.getFromTable(),
+                        fromKeys),
+                resolveForeignKeyEdge(
+                        foreignKeyType.getToName(),
+                        tables,
+                        foreignKeyType.getToTable(),
+                        toKeys));
+    }
+
+    private ForeignKeyEdge resolveForeignKeyEdge(String name, Map<TableName, TableMetaData> tables, String tableName, String[] fieldNames) {
+        TableName tableName1 = resolveTableName(tableName);
+        return ForeignKeyEdge.from(
+                Optional.ofNullable(name),
+                tableName1,
+                resolveFields(tables, tableName1, fieldNames));
+    }
+
+
+    private TableName resolveTableName(String tableName) {
+        String[] tableNameElements = tableName.split("\\.");
+
+        if (tableNameElements.length == 1) {
+            return TableName.from(null, null, tableNameElements[0]);
+        } else if (tableNameElements.length == 2) {
+            return TableName.from(null, tableNameElements[0], tableNameElements[1]);
+        } else {
+            return TableName.from(tableNameElements[0], tableNameElements[1], tableNameElements[2]);
+        }
+    }
+
+    private Collection<FieldMetaData> resolveFields(Map<TableName, TableMetaData> tables, TableName tableName, String[] fieldNames) {
+        return Stream.of(fieldNames).map(x -> resolveField(tables, tableName, x)).collect(Collectors.<FieldMetaData>toList());
     }
 
     private FieldMetaData resolveField(Map<TableName, TableMetaData> tables, TableName tableName, String fieldName) {

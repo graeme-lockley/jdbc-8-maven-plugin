@@ -12,10 +12,7 @@ import za.co.no9.jfixture.FixturesInput;
 import za.co.no9.jfixture.JDBCHandler;
 
 import java.sql.Connection;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -74,6 +71,11 @@ public class TableMetaDataTest {
             @Override
             public Optional<String> getDBTablePattern() {
                 return Optional.empty();
+            }
+
+            @Override
+            protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
+
             }
         };
     }
