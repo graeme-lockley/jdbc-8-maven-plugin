@@ -37,7 +37,11 @@ public class TableName {
 
     @Override
     public String toString() {
-        return catalog.orElse("") + "." + schema.orElse("") + "." + name;
+        return formatNameElement(catalog) + formatNameElement(schema) + name;
+    }
+    
+    private String formatNameElement(Optional<String> nameElement) {
+        return nameElement.isPresent() ? (nameElement.get() + ".") : "";
     }
 
     @Override
