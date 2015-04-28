@@ -16,6 +16,7 @@
         <xs:sequence>
             <xs:element name="jdbc" type="configuration:JdbcType"/>
             <xs:element name="tables" type="configuration:TablesType"/>
+            <xs:element name="foreign-keys" type="configuration:ForeignKeysType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -51,6 +52,21 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="ForeignKeysType">
+        <xs:sequence>
+            <xs:element name="foreign-key" type="configuration:ForeignKeyType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ForeignKeyType">
+        <xs:attribute name="from-table" type="xs:string"/>
+        <xs:attribute name="from-name" type="xs:string"/>
+        <xs:attribute name="from-fields" type="xs:string"/>
+        <xs:attribute name="to-table" type="xs:string"/>
+        <xs:attribute name="to-name" type="xs:string"/>
+        <xs:attribute name="to-fields" type="xs:string"/>
+    </xs:complexType>
+
     <xs:complexType name="TargetTypes">
         <xs:sequence>
             <xs:element name="target" type="configuration:TargetType" maxOccurs="unbounded"/>
@@ -72,9 +88,7 @@
     </xs:complexType>
 
     <xs:complexType name="PropertyType">
-        <xs:sequence>
-            <xs:element name="name" type="xs:string"/>
-            <xs:element name="value" type="xs:string"/>
-        </xs:sequence>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="value" type="xs:string"/>
     </xs:complexType>
 </xs:schema>
