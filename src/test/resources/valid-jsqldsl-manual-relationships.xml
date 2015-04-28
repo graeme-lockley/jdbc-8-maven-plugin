@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.no9.co.za/xsd/jdbc-8-maven-plugin-configuration.xsd">
+    <source>
+        <jdbc>
+            <driver>org.h2.Driver</driver>
+            <url>jdbc:h2:mem:</url>
+            <username>sa</username>
+        </jdbc>
+
+        <tables>
+            <include>
+                <schema>PUBLIC</schema>
+            </include>
+            <exclude>
+                <schema>PUBLIC</schema>
+                <table>bob</table>
+            </exclude>
+        </tables>
+
+        <foreign-keys>
+            <foreign-key from-table="PUBLIC.BOOKS" from-name="BOOKS_FK1" from-fields="AUTHOR_ID" to-table="PUBLIC.AUTHORS" to-fields="ID"/>
+        </foreign-keys>
+    </source>
+
+    <targets>
+        <target>
+            <handler>za.co.no9.jdbcdry.tools.HandlerTest</handler>
+            <destination>../generated-test-sources/jsqldsl</destination>
+            <properties>
+                <property name="package" value="x.y.z"/>
+                <property name="driver" value="za.co.no9.jdbcdry.drivers.H2"/>
+            </properties>
+        </target>
+    </targets>
+</configuration>
