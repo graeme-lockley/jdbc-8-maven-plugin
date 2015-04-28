@@ -2,6 +2,7 @@ package za.co.no9.jdbcdry.port.jsqldslmojo;
 
 import org.xml.sax.SAXException;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.DBSearchType;
+import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeyType;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.JdbcType;
 
 import javax.xml.XMLConstants;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public class Configuration {
@@ -107,5 +109,9 @@ public class Configuration {
 
     private DBSearchType getDbSearch() {
         return xmlConfiguration.getSource().getTables().getDbSearch();
+    }
+
+    public List<ForeignKeyType> getManualForeignKeys() {
+        return xmlConfiguration.getSource().getForeignKeys().getForeignKey();
     }
 }
