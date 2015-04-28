@@ -102,25 +102,12 @@ public abstract class DBDriverParent implements DBDriver {
                         toKeys));
     }
 
-    private ForeignKeyEdge resolveForeignKeyEdge(String name, Map<TableName, TableMetaData> tables, String tableName, String[] fieldNames) {
-        TableName tableName1 = resolveTableName(tableName);
+    private ForeignKeyEdge resolveForeignKeyEdge(String name, Map<TableName, TableMetaData> tables, String qualifiedTableName, String[] fieldNames) {
+        TableName tableName = TableName.from(qualifiedTableName);
         return ForeignKeyEdge.from(
                 Optional.ofNullable(name),
-                tableName1,
-                resolveFields(tables, tableName1, fieldNames));
-    }
-
-
-    private TableName resolveTableName(String tableName) {
-        String[] tableNameElements = tableName.split("\\.");
-
-        if (tableNameElements.length == 1) {
-            return TableName.from(null, null, tableNameElements[0]);
-        } else if (tableNameElements.length == 2) {
-            return TableName.from(null, tableNameElements[0], tableNameElements[1]);
-        } else {
-            return TableName.from(tableNameElements[0], tableNameElements[1], tableNameElements[2]);
-        }
+                tableName,
+                resolveFields(tables, tableName, fieldNames));
     }
 
     private Collection<FieldMetaData> resolveFields(Map<TableName, TableMetaData> tables, TableName tableName, String[] fieldNames) {

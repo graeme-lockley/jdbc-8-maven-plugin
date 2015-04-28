@@ -31,6 +31,18 @@ public class TableName {
         return new TableName(Optional.ofNullable(catalog), Optional.ofNullable(schema), name);
     }
 
+    public static TableName from(String qualifiedTableName) {
+        String[] tableNameElements = qualifiedTableName.split("\\.");
+
+        if (tableNameElements.length == 1) {
+            return TableName.from(null, null, tableNameElements[0]);
+        } else if (tableNameElements.length == 2) {
+            return TableName.from(null, tableNameElements[0], tableNameElements[1]);
+        } else {
+            return TableName.from(tableNameElements[0], tableNameElements[1], tableNameElements[2]);
+        }
+    }
+
     public String name() {
         return name;
     }
