@@ -11,13 +11,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface DBDriver {
-    void setConfiguration(Configuration configuration);
+    void setConfiguration(Configuration configuration, Connection connection);
 
-    DatabaseMetaData databaseMetaData(Connection connection);
+    Connection getConnection();
 
-    TableMetaData tableMetaData(Connection connection, TableName tableName) throws SQLException;
+    DatabaseMetaData databaseMetaData();
 
-    TableMetaData resolveForeignConstraints(Connection connection, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) throws SQLException;
+    TableMetaData tableMetaData(TableName tableName) throws SQLException;
+
+    TableMetaData resolveForeignConstraints(Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) throws SQLException;
 
     Optional<String> getDBCatalogue();
 

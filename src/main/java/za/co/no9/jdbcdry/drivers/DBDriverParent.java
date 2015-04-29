@@ -13,27 +13,34 @@ import java.util.stream.Stream;
 
 public abstract class DBDriverParent implements DBDriver {
     private Configuration configuration;
+    private Connection connection;
 
     @Override
-    public void setConfiguration(Configuration configuration) {
+    public void setConfiguration(Configuration configuration, Connection connection) {
         this.configuration = configuration;
+        this.connection = connection;
     }
 
     @Override
-    public DatabaseMetaData databaseMetaData(Connection connection) {
-        return DatabaseMetaData.from(this, connection);
+    public Connection getConnection() {
+        return connection;
     }
 
     @Override
-    public TableMetaData tableMetaData(Connection connection, TableName tableName) throws SQLException {
-        Set<String> primaryKey = primaryKey(connection, tableName);
-
-        return new TableMetaData(tableName, fields(connection, tableName, primaryKey));
+    public DatabaseMetaData databaseMetaData() {
+        return DatabaseMetaData.from(this);
     }
 
     @Override
-    public TableMetaData resolveForeignConstraints(Connection connection, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) throws SQLException {
-        java.sql.DatabaseMetaData dbm = connection.getMetaData();
+    public TableMetaData tableMetaData(TableName tableName) throws SQLException {
+        Set<String> primaryKey = primaryKey(tableName);
+
+        return new TableMetaData(tableName, fields(tableName, primaryKey));
+    }
+
+    @Override
+    public TableMetaData resolveForeignConstraints(Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) throws SQLException {
+        java.sql.DatabaseMetaData dbm = getConnection().getMetaData();
 
         List<ForeignKey> result = new ArrayList<>();
         try (ResultSet importedKeys = dbm.getImportedKeys(tableMetaData.tableName().catalog().orElse(null), tableMetaData.tableName().schema().orElse(null), tableMetaData.tableName().name())) {
@@ -118,8 +125,8 @@ public abstract class DBDriverParent implements DBDriver {
         return tables.get(tableName).field(fieldName).get();
     }
 
-    protected Set<String> primaryKey(Connection connection, TableName tableName) throws SQLException {
-        java.sql.DatabaseMetaData dbm = connection.getMetaData();
+    protected Set<String> primaryKey(TableName tableName) throws SQLException {
+        java.sql.DatabaseMetaData dbm = getConnection().getMetaData();
 
         Set<String> primaryKey = new HashSet<>();
         try (ResultSet resultSet = dbm.getPrimaryKeys("", "", tableName.dbName())) {
@@ -131,8 +138,8 @@ public abstract class DBDriverParent implements DBDriver {
         return primaryKey;
     }
 
-    private FieldMetaData[] fields(Connection connection, TableName tableName, Set<String> primaryKeys) throws SQLException {
-        java.sql.DatabaseMetaData dbm = connection.getMetaData();
+    private FieldMetaData[] fields(TableName tableName, Set<String> primaryKeys) throws SQLException {
+        java.sql.DatabaseMetaData dbm = getConnection().getMetaData();
 
         List<FieldMetaData> fields = new ArrayList<>();
         try (ResultSet resultSet = dbm.getColumns(tableName.catalog().orElse(""), tableName.schema().orElse(""), tableName.dbName(), null)) {
