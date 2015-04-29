@@ -79,8 +79,8 @@ public abstract class DBDriverParent implements DBDriver {
     }
 
     protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
-        for (Object objForeignKeyType : configuration.getManualForeignKeys().stream().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).toArray()) {
-            foreignKeys.add(resolveForeignKey(tables, (ForeignKeyType) objForeignKeyType));
+        for (ForeignKeyType foreignKeyType : configuration.getManualForeignKeys().stream().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).collect(Collectors.<ForeignKeyType>toList())) {
+            foreignKeys.add(resolveForeignKey(tables, foreignKeyType));
         }
     }
 
@@ -138,7 +138,7 @@ public abstract class DBDriverParent implements DBDriver {
         return primaryKey;
     }
 
-    private FieldMetaData[] fields(TableName tableName, Set<String> primaryKeys) throws SQLException {
+    private Iterable<FieldMetaData> fields(TableName tableName, Set<String> primaryKeys) throws SQLException {
         java.sql.DatabaseMetaData dbm = getConnection().getMetaData();
 
         List<FieldMetaData> fields = new ArrayList<>();
@@ -148,7 +148,7 @@ public abstract class DBDriverParent implements DBDriver {
             }
         }
 
-        return fields.toArray(new FieldMetaData[1]);
+        return fields;
     }
 
     protected abstract FieldMetaData fromColumnsResultSet(Set<String> primaryKeys, ResultSet resultSet) throws SQLException;
