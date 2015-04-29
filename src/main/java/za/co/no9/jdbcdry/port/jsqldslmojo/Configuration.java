@@ -18,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Configuration {
     private static final String SCHEMA_RESOURCE_NAME = "/xsd/jdbc-8-maven-plugin-configuration.xsd";
@@ -110,7 +111,7 @@ public class Configuration {
         return xmlConfiguration.getSource().getTables().getDbSearch();
     }
 
-    public Iterable<ForeignKeyType> getManualForeignKeys() {
-        return xmlConfiguration.getSource().getForeignKeys().getForeignKey();
+    public Stream<ForeignKeyType> getManualForeignKeys() {
+        return xmlConfiguration.getSource().getForeignKeys().getForeignKey().stream();
     }
 }

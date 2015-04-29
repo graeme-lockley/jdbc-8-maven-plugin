@@ -79,7 +79,7 @@ public abstract class DBDriverParent implements DBDriver {
     }
 
     protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
-        for (ForeignKeyType foreignKeyType : configuration.getManualForeignKeys().stream().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).collect(Collectors.<ForeignKeyType>toList())) {
+        for (ForeignKeyType foreignKeyType : configuration.getManualForeignKeys().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).collect(Collectors.<ForeignKeyType>toList())) {
             foreignKeys.add(resolveForeignKey(tables, foreignKeyType));
         }
     }
