@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 public class Configuration {
@@ -111,7 +110,7 @@ public class Configuration {
         return xmlConfiguration.getSource().getTables().getDbSearch();
     }
 
-    public List<ForeignKeyType> getManualForeignKeys() {
+    public Iterable<ForeignKeyType> getManualForeignKeys() {
         return xmlConfiguration.getSource().getForeignKeys().getForeignKey();
     }
 }
