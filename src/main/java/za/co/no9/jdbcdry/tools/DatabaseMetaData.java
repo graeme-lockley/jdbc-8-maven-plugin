@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class DatabaseMetaData {
     private DBDriver dbDriver;
@@ -18,11 +19,11 @@ public class DatabaseMetaData {
         return new DatabaseMetaData(dbDriver);
     }
 
-    public Collection<TableMetaData> allTables() throws SQLException {
+    public Stream<TableMetaData> allTables() throws SQLException {
         return tables(dbDriver.getDBCatalogue(), dbDriver.getDBSchemaPattern(), dbDriver.getDBTablePattern());
     }
 
-    private Collection<TableMetaData> tables(Optional<String> catalogue, Optional<String> schemaNamePattern, Optional<String> tableNamePattern) throws SQLException {
+    private Stream<TableMetaData> tables(Optional<String> catalogue, Optional<String> schemaNamePattern, Optional<String> tableNamePattern) throws SQLException {
         Map<TableName, TableMetaData> tables = allTablesDictionary(catalogue, schemaNamePattern, tableNamePattern);
         return resolveForeignKeyConstraints(tables);
     }
@@ -40,12 +41,12 @@ public class DatabaseMetaData {
         return tables;
     }
 
-    private List<TableMetaData> resolveForeignKeyConstraints(Map<TableName, TableMetaData> tables) throws SQLException {
+    private Stream<TableMetaData> resolveForeignKeyConstraints(Map<TableName, TableMetaData> tables) throws SQLException {
         List<TableMetaData> result = new ArrayList<>();
         for (TableMetaData tableMetaData : tables.values()) {
             result.add(dbDriver.resolveForeignConstraints(tables, tableMetaData));
         }
-        return result;
+        return result.stream();
     }
 
     private Connection getConnection() { return dbDriver.getConnection(); }

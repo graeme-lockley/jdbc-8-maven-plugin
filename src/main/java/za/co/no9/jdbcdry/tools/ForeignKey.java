@@ -35,7 +35,7 @@ public final class ForeignKey {
         return new ForeignKey(primaryEdge.addColumn(pkColumn), foreignEdge.addColumn(fkColumn));
     }
 
-    public FieldMetaData[] pkColumns() {
+    public Iterable<FieldMetaData> pkColumns() {
         return primaryEdge.columns();
     }
 
@@ -43,7 +43,7 @@ public final class ForeignKey {
         return primaryEdge.columnNames(separator);
     }
 
-    public FieldMetaData[] fkColumns() {
+    public Iterable<FieldMetaData> fkColumns() {
         return foreignEdge.columns();
     }
 

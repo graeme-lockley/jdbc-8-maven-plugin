@@ -8,6 +8,7 @@ import za.co.no9.jdbcdry.tools.DatabaseMetaData;
 import za.co.no9.jdbcdry.tools.ForeignKey;
 import za.co.no9.jdbcdry.tools.HandlerTargetParent;
 import za.co.no9.jdbcdry.tools.TableMetaData;
+import za.co.no9.jdbcdry.util.ListUtils;
 import za.co.no9.jfixture.FixtureException;
 import za.co.no9.jfixture.Fixtures;
 import za.co.no9.jfixture.FixturesInput;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,10 +42,11 @@ public class JSQLDSLMojoTest {
         DBDriver dbDriver = dbDriver(connection, "/valid-jsqldsl-manual-relationships.xml");
 
         DatabaseMetaData databaseMetaData = dbDriver.databaseMetaData();
-        TableMetaData book = databaseMetaData.allTables().stream().filter(x -> x.tableName().name().equals("BOOKS")).findFirst().get();
+        TableMetaData book = databaseMetaData.allTables().filter(x -> x.tableName().name().equals("BOOKS")).findFirst().get();
 
-        assertEquals(1, book.foreignKeys().length);
-        ForeignKey foreignKey = book.foreignKeys()[0];
+        List<ForeignKey> bookForeignKeys = ListUtils.fromIterable(book.foreignKeys());
+        assertEquals(1, bookForeignKeys.size());
+        ForeignKey foreignKey = bookForeignKeys.get(0);
 
         assertEquals("BOOKS", foreignKey.pkTableName().dbName());
         assertEquals("AUTHOR_ID", foreignKey.pkColumnNames(","));

@@ -1,21 +1,23 @@
 package za.co.no9.jdbcdry.tools;
 
+import za.co.no9.jdbcdry.util.ListUtils;
+
 import java.util.*;
 
 public class TableMetaData {
     private final TableName tableName;
-    private final FieldMetaData[] fieldsMetaData;
+    private final List<FieldMetaData> fieldsMetaData;
     private final Optional<Collection<ForeignKey>> constraints;
 
-    public TableMetaData(TableName tableName, FieldMetaData[] fieldsMetaData, Collection<ForeignKey> constraints) {
+    public TableMetaData(TableName tableName, Iterable<FieldMetaData> fieldsMetaData, Iterable<ForeignKey> constraints) {
         this.tableName = tableName;
-        this.fieldsMetaData = fieldsMetaData;
-        this.constraints = Optional.of(new ArrayList<>(constraints));
+        this.fieldsMetaData = ListUtils.fromIterable(fieldsMetaData);
+        this.constraints = Optional.of(ListUtils.fromIterable(constraints));
     }
 
-    public TableMetaData(TableName tableName, FieldMetaData[] fieldsMetaData) {
+    public TableMetaData(TableName tableName, Iterable<FieldMetaData> fieldsMetaData) {
         this.tableName = tableName;
-        this.fieldsMetaData = fieldsMetaData;
+        this.fieldsMetaData = ListUtils.fromIterable(fieldsMetaData);
         this.constraints = Optional.empty();
     }
 
@@ -51,12 +53,12 @@ public class TableMetaData {
         return result;
     }
 
-    public List<FieldMetaData> fields() {
-        return Arrays.asList(fieldsMetaData);
+    public Iterable<FieldMetaData> fields() {
+        return fieldsMetaData;
     }
 
-    public ForeignKey[] foreignKeys() {
-        return constraints.get().toArray(new ForeignKey[constraints.get().size()]);
+    public Iterable<ForeignKey> foreignKeys() {
+        return constraints.get();
     }
 
     public Optional<FieldMetaData> field(String fieldName) {
@@ -69,6 +71,6 @@ public class TableMetaData {
     }
 
     public String toString() {
-        return "{name: " + tableName + ", fields: " + fields() + ", foreign_keys: " + Arrays.toString(foreignKeys()) + "}";
+        return "{name: " + tableName + ", fields: " + fields() + ", foreign_keys: " + foreignKeys() + "}";
     }
 }

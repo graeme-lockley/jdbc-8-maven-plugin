@@ -7,6 +7,7 @@ import org.junit.Test;
 import za.co.no9.jdbcdry.drivers.H2;
 import za.co.no9.jdbcdry.port.jsqldslmojo.TableFilter;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
+import za.co.no9.jdbcdry.util.ListUtils;
 import za.co.no9.jfixture.Fixtures;
 import za.co.no9.jfixture.FixturesInput;
 import za.co.no9.jfixture.JDBCHandler;
@@ -50,7 +51,7 @@ public class TableMetaDataTest {
     public void should_list_all_tables() throws Exception {
         TableFilter tableFilter = new TableFilter(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
 
-        List<TableMetaData> tableMetaDatas = DatabaseMetaData.from(getDbDriver()).allTables().stream()
+        List<TableMetaData> tableMetaDatas = DatabaseMetaData.from(getDbDriver()).allTables()
                 .filter(tableFilter::filter)
                 .collect(Collectors.toList());
         assertEquals(4, tableMetaDatas.size());
@@ -91,7 +92,7 @@ public class TableMetaDataTest {
         includeType.setTable("BOOKS");
         TableFilter tableFilter = new TableFilter(Collections.singletonList(includeType), Collections.EMPTY_LIST);
 
-        Optional<TableMetaData> optBookMetaData = DatabaseMetaData.from(getDbDriver()).allTables().stream()
+        Optional<TableMetaData> optBookMetaData = DatabaseMetaData.from(getDbDriver()).allTables()
                 .filter(tableFilter::filter)
                 .findFirst();
         assertTrue(optBookMetaData.isPresent());
@@ -99,9 +100,11 @@ public class TableMetaDataTest {
         TableMetaData bookMetaData = optBookMetaData.get();
         assertEquals("BOOKS", bookMetaData.tableName().name());
 
-        assertEquals(2, bookMetaData.foreignKeys().length);
-        assertConstraint(BOOKS_FK1, bookMetaData.foreignKeys()[0]);
-        assertConstraint(BOOKS_FK2, bookMetaData.foreignKeys()[1]);
+
+        List<ForeignKey> foreignKeys = ListUtils.fromIterable(bookMetaData.foreignKeys());
+        assertEquals(2, foreignKeys.size());
+        assertConstraint(BOOKS_FK1, foreignKeys.get(0));
+        assertConstraint(BOOKS_FK2, foreignKeys.get(1));
     }
 
     @Test
