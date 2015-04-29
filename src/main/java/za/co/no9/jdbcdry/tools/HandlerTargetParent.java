@@ -5,6 +5,7 @@ import za.co.no9.jdbcdry.port.jsqldslmojo.ConfigurationException;
 import za.co.no9.jdbcdry.port.jsqldslmojo.Target;
 
 import java.io.File;
+import java.sql.Connection;
 
 public abstract class HandlerTargetParent {
     protected final Target target;
@@ -21,10 +22,10 @@ public abstract class HandlerTargetParent {
         return target.getConfigurationParentFile();
     }
 
-    public DBDriver getDBDriver() throws ConfigurationException {
+    public DBDriver getDBDriver(Connection connection) throws ConfigurationException {
         try {
             DBDriver dbDriver = (DBDriver) Class.forName(getDriverClassName()).newInstance();
-            dbDriver.setConfiguration(target.getConfiguration());
+            dbDriver.setConfiguration(target.getConfiguration(), connection);
             return dbDriver;
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
             throw new ConfigurationException("Unable to instantiate the DB handler " + getDriverClassName() + ".", ex);

@@ -39,7 +39,7 @@ public class JSQLDSLMojoTest {
         Connection connection = loadFixtures("tables-without-fk.yaml");
         DBDriver dbDriver = dbDriver(connection, "/valid-jsqldsl-manual-relationships.xml");
 
-        DatabaseMetaData databaseMetaData = dbDriver.databaseMetaData(connection);
+        DatabaseMetaData databaseMetaData = dbDriver.databaseMetaData();
         TableMetaData book = databaseMetaData.allTables().stream().filter(x -> x.tableName().name().equals("BOOKS")).findFirst().get();
 
         assertEquals(1, book.foreignKeys().length);
@@ -62,14 +62,14 @@ public class JSQLDSLMojoTest {
         Target target = Target.from(configuration, null);
         HandlerTargetParent handlerTarget = new HandlerTargetParent(target) {
             @Override
-            public DBDriver getDBDriver() throws ConfigurationException {
+            public DBDriver getDBDriver(Connection connection) throws ConfigurationException {
                 H2 driver = new H2();
-                driver.setConfiguration(configuration);
+                driver.setConfiguration(configuration, connection);
                 return driver;
             }
         };
 
-        return handlerTarget.getDBDriver();
+        return handlerTarget.getDBDriver(connection);
     }
 
     private Connection loadFixtures(String fixturesFileName) throws IOException, FixtureException {
