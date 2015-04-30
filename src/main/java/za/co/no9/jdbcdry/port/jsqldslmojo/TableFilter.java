@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TableFilter {
     private final List<CompiledTablePattern> includes;
@@ -37,8 +38,8 @@ public class TableFilter {
         return filter(table.tableName());
     }
 
-    public Collection<TableMetaData> filter(Collection<TableMetaData> tables) {
-        return tables.stream().filter(this::filter).collect(Collectors.<TableMetaData>toList());
+    public Collection<TableMetaData> filter(Stream<TableMetaData> tables) {
+        return tables.filter(this::filter).collect(Collectors.<TableMetaData>toList());
     }
 
     public boolean filter(TableName tableName) {
