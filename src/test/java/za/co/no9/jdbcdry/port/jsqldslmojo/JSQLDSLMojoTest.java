@@ -48,10 +48,10 @@ public class JSQLDSLMojoTest {
         assertEquals(1, bookForeignKeys.size());
         ForeignKey foreignKey = bookForeignKeys.get(0);
 
-        assertEquals("BOOKS", foreignKey.pkTableName().dbName());
-        assertEquals("AUTHOR_ID", foreignKey.pkColumnNames(","));
-        assertEquals("AUTHORS", foreignKey.fkTableName().dbName());
-        assertEquals("ID", foreignKey.fkColumnNames(","));
+        assertEquals("BOOKS", foreignKey.fkTableName().dbName());
+        assertEquals("AUTHOR_ID", foreignKey.fkColumnNames(","));
+        assertEquals("AUTHORS", foreignKey.pkTableName().dbName());
+        assertEquals("ID", foreignKey.pkColumnNames(","));
     }
 
     private DBDriver dbDriver(final Connection connection, String configurationFileName) throws Exception {

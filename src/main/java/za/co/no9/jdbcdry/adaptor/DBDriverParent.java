@@ -122,15 +122,15 @@ public abstract class DBDriverParent implements DBDriver {
 
         return ForeignKey.from(
                 resolveForeignKeyEdge(
-                        foreignKeyType.getFromName(),
-                        databaseMetaData,
-                        foreignKeyType.getFromTable(),
-                        fromKeys),
-                resolveForeignKeyEdge(
                         foreignKeyType.getToName(),
                         databaseMetaData,
                         foreignKeyType.getToTable(),
-                        toKeys));
+                        toKeys),
+                resolveForeignKeyEdge(
+                        foreignKeyType.getFromName(),
+                        databaseMetaData,
+                        foreignKeyType.getFromTable(),
+                        fromKeys));
     }
 
     private ForeignKeyEdge resolveForeignKeyEdge(String name, DatabaseMetaData databaseMetaData, String qualifiedTableName, String[] fieldNames) {
