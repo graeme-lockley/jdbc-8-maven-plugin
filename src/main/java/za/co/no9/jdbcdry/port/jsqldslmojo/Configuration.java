@@ -76,7 +76,7 @@ public class Configuration {
         return xmlConfiguration.getTargets().getTarget().stream().map(x -> Target.from(this, x)).iterator();
     }
 
-    public Connection getJDBCConnection() throws SQLException {
+    public Connection establishJDBCConnection() throws SQLException {
         JdbcType jdbcType = xmlConfiguration.getSource().getJdbc();
         try {
             Class.forName(jdbcType.getDriver());
