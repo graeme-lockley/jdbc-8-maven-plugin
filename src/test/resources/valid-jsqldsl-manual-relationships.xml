@@ -30,7 +30,7 @@
             <destination>../generated-test-sources/jsqldsl</destination>
             <properties>
                 <property name="package" value="x.y.z"/>
-                <property name="driver" value="za.co.no9.jdbcdry.drivers.H2"/>
+                <property name="driver" value="za.co.no9.jdbcdry.adaptor.H2"/>
             </properties>
         </target>
     </targets>

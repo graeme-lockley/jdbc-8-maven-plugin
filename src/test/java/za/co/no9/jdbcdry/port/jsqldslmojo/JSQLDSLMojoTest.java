@@ -2,8 +2,8 @@ package za.co.no9.jdbcdry.port.jsqldslmojo;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import za.co.no9.jdbcdry.drivers.DBDriver;
-import za.co.no9.jdbcdry.drivers.H2;
+import za.co.no9.jdbcdry.adaptor.DBDriver;
+import za.co.no9.jdbcdry.adaptor.H2;
 import za.co.no9.jdbcdry.model.DatabaseMetaData;
 import za.co.no9.jdbcdry.model.ForeignKey;
 import za.co.no9.jdbcdry.model.HandlerTargetParent;

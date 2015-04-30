@@ -1,4 +1,4 @@
-package za.co.no9.jdbcdry.drivers;
+package za.co.no9.jdbcdry.adaptor;
 
 import org.apache.commons.lang3.StringUtils;
 import za.co.no9.jdbcdry.model.FieldMetaData;

@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import za.co.no9.jdbcdry.drivers.H2;
+import za.co.no9.jdbcdry.adaptor.H2;
 import za.co.no9.jdbcdry.port.jsqldslmojo.TableFilter;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
 import za.co.no9.jdbcdry.util.ListUtils;

@@ -1,7 +1,7 @@
 package za.co.no9.jdbcdry.model;
 
-import za.co.no9.jdbcdry.drivers.DBDriver;
-import za.co.no9.jdbcdry.drivers.Oracle;
+import za.co.no9.jdbcdry.adaptor.DBDriver;
+import za.co.no9.jdbcdry.adaptor.Oracle;
 import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
 
 import java.io.File;

@@ -1,6 +1,6 @@
 package za.co.no9.jdbcdry.model;
 
-import za.co.no9.jdbcdry.drivers.DBDriver;
+import za.co.no9.jdbcdry.adaptor.DBDriver;
 import za.co.no9.jdbcdry.port.jsqldslmojo.ConfigurationException;
 import za.co.no9.jdbcdry.port.jsqldslmojo.Target;
 
