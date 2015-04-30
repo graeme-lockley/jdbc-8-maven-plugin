@@ -1,6 +1,7 @@
 package za.co.no9.jdbcdry.model;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public final class ForeignKey {
     private final ForeignKeyEdge primaryEdge;
@@ -35,7 +36,7 @@ public final class ForeignKey {
         return new ForeignKey(primaryEdge.addColumn(pkColumn), foreignEdge.addColumn(fkColumn));
     }
 
-    public Iterable<FieldMetaData> pkColumns() {
+    public Stream<FieldMetaData> pkColumns() {
         return primaryEdge.columns();
     }
 
@@ -43,7 +44,7 @@ public final class ForeignKey {
         return primaryEdge.columnNames(separator);
     }
 
-    public Iterable<FieldMetaData> fkColumns() {
+    public Stream<FieldMetaData> fkColumns() {
         return foreignEdge.columns();
     }
 

@@ -121,9 +121,9 @@ public class TableMetaDataTest {
         assertEquals(expected.fkName(), actual.fkName());
         assertEquals(expected.pkName(), actual.pkName());
         assertEquals(expected.pkTableName(), actual.pkTableName());
-        assertEquals(expected.pkColumns(), actual.pkColumns());
+        assertEquals(expected.pkColumnNames(","), actual.pkColumnNames(","));
         assertEquals(expected.fkTableName(), actual.fkTableName());
-        assertEquals(expected.fkColumns(), actual.fkColumns());
+        assertEquals(expected.fkColumnNames(","), actual.fkColumnNames(","));
     }
 
     private FieldMetaData fieldMetaData(String name) {

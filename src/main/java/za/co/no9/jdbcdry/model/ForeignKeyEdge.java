@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ForeignKeyEdge {
     private final Optional<String> name;
@@ -29,8 +31,8 @@ public class ForeignKeyEdge {
         return new ForeignKeyEdge(name, tableName, newColumns);
     }
 
-    public Iterable<FieldMetaData> columns() {
-        return columns;
+    public Stream<FieldMetaData> columns() {
+        return columns.stream();
     }
 
     public Optional<String> name() {
@@ -42,10 +44,6 @@ public class ForeignKeyEdge {
     }
 
     public String columnNames(String separator) {
-        StringBuilder sb = new StringBuilder();
-        for (FieldMetaData column : columns) {
-            sb.append(separator).append(column.name());
-        }
-        return sb.substring(separator.length());
+        return columns().map(FieldMetaData::name).collect(Collectors.joining(separator));
     }
 }
