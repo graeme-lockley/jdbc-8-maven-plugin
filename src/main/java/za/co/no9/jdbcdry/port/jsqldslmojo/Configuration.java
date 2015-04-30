@@ -17,7 +17,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -73,8 +72,8 @@ public class Configuration {
         return configurationFile.getParentFile();
     }
 
-    public Iterator<Target> getTargets() {
-        return xmlConfiguration.getTargets().getTarget().stream().map(x -> Target.from(this, x)).iterator();
+    public Stream<Target> getTargets() {
+        return xmlConfiguration.getTargets().getTarget().stream().map(x -> Target.from(this, x));
     }
 
     public Connection establishJDBCConnection() throws SQLException {

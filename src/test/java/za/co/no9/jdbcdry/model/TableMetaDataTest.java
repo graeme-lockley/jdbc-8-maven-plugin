@@ -7,17 +7,16 @@ import org.junit.Test;
 import za.co.no9.jdbcdry.adaptor.H2;
 import za.co.no9.jdbcdry.port.jsqldslmojo.TableFilter;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
-import za.co.no9.jdbcdry.util.ListUtils;
 import za.co.no9.jfixture.Fixtures;
 import za.co.no9.jfixture.FixturesInput;
 import za.co.no9.jfixture.JDBCHandler;
 
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,11 +25,11 @@ public class TableMetaDataTest {
     private static Connection connection;
 
     private final ForeignKey BOOKS_FK1 = ForeignKey.from(
-            ForeignKeyEdge.from(Optional.of("BOOKS_FK1_INDEX_4"), TableName.from("UNNAMED", "PUBLIC", "AUTHORS"), Arrays.asList(fieldMetaData("ID"), fieldMetaData("FIRST_NAME"))),
-            ForeignKeyEdge.from(Optional.of("BOOKS_FK1"), TableName.from("UNNAMED", "PUBLIC", "BOOKS"), Arrays.asList(fieldMetaData("AUTHOR_ID"), fieldMetaData("NAME"))));
+            ForeignKeyEdge.from(Optional.of("BOOKS_FK1_INDEX_4"), TableName.from("UNNAMED.PUBLIC.AUTHORS"), Stream.of(fieldMetaData("ID"), fieldMetaData("FIRST_NAME"))),
+            ForeignKeyEdge.from(Optional.of("BOOKS_FK1"), TableName.from("UNNAMED.PUBLIC.BOOKS"), Stream.of(fieldMetaData("AUTHOR_ID"), fieldMetaData("NAME"))));
     private final ForeignKey BOOKS_FK2 = ForeignKey.from(
-            ForeignKeyEdge.from(Optional.of("BOOKS_FK2_INDEX_4"), TableName.from("UNNAMED", "PUBLIC", "AUTHORS"), Arrays.asList(fieldMetaData("ID"), fieldMetaData("SURNAME"))),
-            ForeignKeyEdge.from(Optional.of("BOOKS_FK2"), TableName.from("UNNAMED", "PUBLIC", "BOOKS"), Arrays.asList(fieldMetaData("AUTHOR_ID"), fieldMetaData("NAME"))));
+            ForeignKeyEdge.from(Optional.of("BOOKS_FK2_INDEX_4"), TableName.from("UNNAMED.PUBLIC.AUTHORS"), Stream.of(fieldMetaData("ID"), fieldMetaData("SURNAME"))),
+            ForeignKeyEdge.from(Optional.of("BOOKS_FK2"), TableName.from("UNNAMED.PUBLIC.BOOKS"), Stream.of(fieldMetaData("AUTHOR_ID"), fieldMetaData("NAME"))));
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -104,7 +103,7 @@ public class TableMetaDataTest {
         assertEquals("BOOKS", bookMetaData.tableName().name());
 
 
-        List<ForeignKey> foreignKeys = ListUtils.fromIterable(bookMetaData.foreignKeys());
+        List<ForeignKey> foreignKeys = bookMetaData.foreignKeys().collect(Collectors.toList());
         assertEquals(2, foreignKeys.size());
         assertConstraint(BOOKS_FK1, foreignKeys.get(0));
         assertConstraint(BOOKS_FK2, foreignKeys.get(1));

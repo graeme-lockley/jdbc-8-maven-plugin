@@ -2,15 +2,15 @@ package za.co.no9.jdbcdry.model;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
 public class ForeignKeyEdgeTest {
     @Test
     public void should_format_the_column_names() {
-        ForeignKeyEdge foreignKeyEdge = ForeignKeyEdge.from(Optional.of("BOOKS_FK2_INDEX_4"), TableName.from("UNNAMED", "PUBLIC", "AUTHORS"), Arrays.asList(fieldMetaData("ID"), fieldMetaData("SURNAME")));
+        ForeignKeyEdge foreignKeyEdge = ForeignKeyEdge.from(Optional.of("BOOKS_FK2_INDEX_4"), TableName.from("UNNAMED", "PUBLIC", "AUTHORS"), Stream.of(fieldMetaData("ID"), fieldMetaData("SURNAME")));
 
         assertEquals("ID, SURNAME", foreignKeyEdge.columnNames(", "));
     }

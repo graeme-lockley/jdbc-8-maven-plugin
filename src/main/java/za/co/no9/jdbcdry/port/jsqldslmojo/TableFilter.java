@@ -5,12 +5,10 @@ import za.co.no9.jdbcdry.model.TableName;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TableFilter {
@@ -38,8 +36,8 @@ public class TableFilter {
         return filter(table.tableName());
     }
 
-    public Collection<TableMetaData> filter(Stream<TableMetaData> tables) {
-        return tables.filter(this::filter).collect(Collectors.<TableMetaData>toList());
+    public Stream<TableMetaData> filter(Stream<TableMetaData> tables) {
+        return tables.filter(this::filter);
     }
 
     public boolean filter(TableName tableName) {

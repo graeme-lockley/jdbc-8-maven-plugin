@@ -8,7 +8,6 @@ import za.co.no9.jdbcdry.model.DatabaseMetaData;
 import za.co.no9.jdbcdry.model.ForeignKey;
 import za.co.no9.jdbcdry.model.HandlerTargetParent;
 import za.co.no9.jdbcdry.model.TableMetaData;
-import za.co.no9.jdbcdry.util.ListUtils;
 import za.co.no9.jfixture.FixtureException;
 import za.co.no9.jfixture.Fixtures;
 import za.co.no9.jfixture.FixturesInput;
@@ -20,6 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,7 +44,7 @@ public class JSQLDSLMojoTest {
         DatabaseMetaData databaseMetaData = dbDriver.databaseMetaData();
         TableMetaData book = databaseMetaData.allTables().filter(x -> x.tableName().name().equals("BOOKS")).findFirst().get();
 
-        List<ForeignKey> bookForeignKeys = ListUtils.fromIterable(book.foreignKeys());
+        List<ForeignKey> bookForeignKeys = book.foreignKeys().collect(Collectors.toList());
         assertEquals(1, bookForeignKeys.size());
         ForeignKey foreignKey = bookForeignKeys.get(0);
 

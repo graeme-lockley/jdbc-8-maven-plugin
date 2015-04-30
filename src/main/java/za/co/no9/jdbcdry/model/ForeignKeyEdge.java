@@ -1,7 +1,5 @@
 package za.co.no9.jdbcdry.model;
 
-import za.co.no9.jdbcdry.util.ListUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,8 +18,8 @@ public class ForeignKeyEdge {
         this.columns = columns;
     }
 
-    public static ForeignKeyEdge from(Optional<String> name, TableName tableName, Iterable<FieldMetaData> columnNames) {
-        return new ForeignKeyEdge(name, tableName, ListUtils.fromIterable(columnNames));
+    public static ForeignKeyEdge from(Optional<String> name, TableName tableName, Stream<FieldMetaData> columnNames) {
+        return new ForeignKeyEdge(name, tableName, columnNames.collect(Collectors.toList()));
     }
 
     public ForeignKeyEdge addColumn(FieldMetaData column) {

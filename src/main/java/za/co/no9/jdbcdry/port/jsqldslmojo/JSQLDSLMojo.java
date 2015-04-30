@@ -36,7 +36,7 @@ public class JSQLDSLMojo extends AbstractMojo {
         try (Connection connection = configuration.establishJDBCConnection()) {
             TableFilter tableFilter = configuration.getTableFilter();
 
-            Iterator<Target> targets = configuration.getTargets();
+            Iterator<Target> targets = configuration.getTargets().iterator();
             while (targets.hasNext()) {
                 ToolHandler toolHandler = targets.next().getToolHandler(getLog());
                 toolHandler.process(connection, tableFilter);
