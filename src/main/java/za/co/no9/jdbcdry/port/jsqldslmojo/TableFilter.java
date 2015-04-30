@@ -1,8 +1,8 @@
 package za.co.no9.jdbcdry.port.jsqldslmojo;
 
+import za.co.no9.jdbcdry.model.TableMetaData;
+import za.co.no9.jdbcdry.model.TableName;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
-import za.co.no9.jdbcdry.tools.TableMetaData;
-import za.co.no9.jdbcdry.tools.TableName;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -22,7 +22,7 @@
 
     <targets>
         <target>
-            <handler>za.co.no9.jdbcdry.tools.HandlerTest</handler>
+            <handler>za.co.no9.jdbcdry.model.HandlerTest</handler>
             <destination>../generated-test-sources/jsqldsl</destination>
             <properties>
                 <property name="package" value="x.y.z"/>

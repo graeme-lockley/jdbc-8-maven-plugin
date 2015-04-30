@@ -1,9 +1,9 @@
 package za.co.no9.jdbcdry.port.jsqldslmojo;
 
 import org.apache.maven.plugin.logging.Log;
+import za.co.no9.jdbcdry.model.ToolHandler;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.PropertyType;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TargetType;
-import za.co.no9.jdbcdry.tools.ToolHandler;
 
 import java.io.File;
 import java.util.Optional;

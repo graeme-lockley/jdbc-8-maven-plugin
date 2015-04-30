@@ -1,9 +1,9 @@
 package za.co.no9.jdbcdry.drivers;
 
+import za.co.no9.jdbcdry.model.DatabaseMetaData;
+import za.co.no9.jdbcdry.model.TableMetaData;
+import za.co.no9.jdbcdry.model.TableName;
 import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
-import za.co.no9.jdbcdry.tools.DatabaseMetaData;
-import za.co.no9.jdbcdry.tools.TableMetaData;
-import za.co.no9.jdbcdry.tools.TableName;
 
 import java.sql.Connection;
 import java.sql.SQLException;

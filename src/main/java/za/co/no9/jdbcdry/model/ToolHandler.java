@@ -1,4 +1,4 @@
-package za.co.no9.jdbcdry.tools;
+package za.co.no9.jdbcdry.model;
 
 import org.apache.maven.plugin.logging.Log;
 import za.co.no9.jdbcdry.port.jsqldslmojo.ConfigurationException;

@@ -1,4 +1,4 @@
-package za.co.no9.jdbcdry.tools;
+package za.co.no9.jdbcdry.model;
 
 import za.co.no9.jdbcdry.drivers.DBDriver;
 

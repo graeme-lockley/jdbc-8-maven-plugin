@@ -1,6 +1,6 @@
 package za.co.no9.jdbcdry.drivers;
 
-import za.co.no9.jdbcdry.tools.FieldMetaData;
+import za.co.no9.jdbcdry.model.FieldMetaData;
 import za.co.no9.jdbcdry.util.IntegerUtils;
 
 import java.sql.ResultSet;

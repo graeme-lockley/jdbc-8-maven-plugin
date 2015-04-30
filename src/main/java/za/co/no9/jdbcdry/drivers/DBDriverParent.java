@@ -1,8 +1,8 @@
 package za.co.no9.jdbcdry.drivers;
 
+import za.co.no9.jdbcdry.model.*;
 import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeyType;
-import za.co.no9.jdbcdry.tools.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

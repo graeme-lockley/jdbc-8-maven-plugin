@@ -1,8 +1,8 @@
 package za.co.no9.jdbcdry.port.jsqldslmojo;
 
 import org.junit.Test;
+import za.co.no9.jdbcdry.model.TableName;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.TablePatternType;
-import za.co.no9.jdbcdry.tools.TableName;
 
 import java.util.Collections;
 

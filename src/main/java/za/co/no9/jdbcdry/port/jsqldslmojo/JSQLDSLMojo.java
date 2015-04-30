@@ -4,8 +4,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import za.co.no9.jdbcdry.tools.GenerationException;
-import za.co.no9.jdbcdry.tools.ToolHandler;
+import za.co.no9.jdbcdry.model.GenerationException;
+import za.co.no9.jdbcdry.model.ToolHandler;
 
 import java.io.File;
 import java.sql.Connection;
