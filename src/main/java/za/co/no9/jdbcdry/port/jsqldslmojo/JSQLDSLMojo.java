@@ -10,7 +10,6 @@ import za.co.no9.jdbcdry.model.ToolHandler;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Iterator;
 
 @Mojo(name = "jsqldsl")
 public class JSQLDSLMojo extends AbstractMojo {
@@ -36,9 +35,8 @@ public class JSQLDSLMojo extends AbstractMojo {
         try (Connection connection = configuration.establishJDBCConnection()) {
             TableFilter tableFilter = configuration.getTableFilter();
 
-            Iterator<Target> targets = configuration.getTargets().iterator();
-            while (targets.hasNext()) {
-                ToolHandler toolHandler = targets.next().getToolHandler(getLog());
+            for (Target target: configuration.getTargets().toArray(Target[]::new)) {
+                ToolHandler toolHandler = target.getToolHandler(getLog());
                 toolHandler.process(connection, tableFilter);
             }
         }
