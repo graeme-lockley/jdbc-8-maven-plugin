@@ -13,7 +13,10 @@ import za.co.no9.jfixture.FixturesInput;
 import za.co.no9.jfixture.JDBCHandler;
 
 import java.sql.Connection;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -60,22 +63,22 @@ public class TableMetaDataTest {
     private H2 getDbDriver() {
         return new H2() {
             @Override
-            public Optional<String> getDBCatalogue() {
+            protected Optional<String> getDBCatalogue() {
                 return Optional.empty();
             }
 
             @Override
-            public Optional<String> getDBSchemaPattern() {
+            protected Optional<String> getDBSchemaPattern() {
                 return Optional.of("PUBLIC");
             }
 
             @Override
-            public Optional<String> getDBTablePattern() {
+            protected Optional<String> getDBTablePattern() {
                 return Optional.empty();
             }
 
             @Override
-            protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
+            protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, DatabaseMetaData databaseMetaData, TableMetaData tableMetaData) {
             }
 
             @Override

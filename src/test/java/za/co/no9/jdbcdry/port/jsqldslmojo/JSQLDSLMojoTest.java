@@ -30,7 +30,7 @@ public class JSQLDSLMojoTest {
 
         new JSQLDSLMojo().processConfiguration(new za.co.no9.jdbcdry.port.jsqldslmojo.Configuration(getResource("/valid-jsqldsl.xml")) {
             @Override
-            public Connection getJDBCConnection() throws SQLException {
+            public Connection establishJDBCConnection() throws SQLException {
                 return connection;
             }
         });
@@ -57,7 +57,7 @@ public class JSQLDSLMojoTest {
     private DBDriver dbDriver(final Connection connection, String configurationFileName) throws Exception {
         Configuration configuration = new Configuration(getResource(configurationFileName)) {
             @Override
-            public Connection getJDBCConnection() throws SQLException {
+            public Connection establishJDBCConnection() throws SQLException {
                 return connection;
             }
         };

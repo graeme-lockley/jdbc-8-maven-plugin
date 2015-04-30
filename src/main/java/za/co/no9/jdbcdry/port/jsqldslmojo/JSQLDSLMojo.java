@@ -33,7 +33,7 @@ public class JSQLDSLMojo extends AbstractMojo {
     }
 
     protected void processConfiguration(Configuration configuration) throws ConfigurationException, GenerationException, SQLException {
-        try (Connection connection = configuration.getJDBCConnection()) {
+        try (Connection connection = configuration.establishJDBCConnection()) {
             TableFilter tableFilter = configuration.getTableFilter();
 
             Iterator<Target> targets = configuration.getTargets();

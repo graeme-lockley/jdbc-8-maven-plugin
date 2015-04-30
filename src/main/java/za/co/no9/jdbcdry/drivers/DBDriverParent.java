@@ -21,25 +21,48 @@ public abstract class DBDriverParent implements DBDriver {
         this.connection = connection;
     }
 
+    public DatabaseMetaData allTables() throws SQLException {
+        DatabaseMetaData databaseMetaData = new DatabaseMetaData();
+
+        allTablesDictionary(databaseMetaData);
+        resolveForeignKeyConstraints(databaseMetaData);
+
+        return databaseMetaData;
+    }
+
+    private void allTablesDictionary(DatabaseMetaData databaseMetaData) throws SQLException {
+        java.sql.DatabaseMetaData metaData = getConnection().getMetaData();
+        try (ResultSet rs = metaData.getTables(getDBCatalogue().orElse(null), getDBSchemaPattern().orElse(null), getDBTablePattern().orElse(null), null)) {
+            while (rs.next()) {
+                TableMetaData tableMetaData = tableMetaData(TableName.from(rs.getString(1), rs.getString(2), rs.getString(3)));
+                databaseMetaData.addTable(tableMetaData);
+            }
+        }
+    }
+
+    private void resolveForeignKeyConstraints(DatabaseMetaData databaseMetaData) throws SQLException {
+        for (TableMetaData tableMetaData : databaseMetaData.allTables().collect(Collectors.toList())) {
+            databaseMetaData.addTable(resolveForeignConstraints(databaseMetaData, tableMetaData));
+        }
+    }
+
     @Override
     public Connection getConnection() {
         return connection;
     }
 
     @Override
-    public DatabaseMetaData databaseMetaData() {
-        return DatabaseMetaData.from(this);
+    public DatabaseMetaData databaseMetaData() throws SQLException {
+        return allTables();
     }
 
     @Override
     public TableMetaData tableMetaData(TableName tableName) throws SQLException {
-        Set<String> primaryKey = primaryKey(tableName);
-
-        return new TableMetaData(tableName, fields(tableName, primaryKey));
+        return new TableMetaData(tableName, fields(tableName, primaryKey(tableName)));
     }
 
     @Override
-    public TableMetaData resolveForeignConstraints(Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) throws SQLException {
+    public TableMetaData resolveForeignConstraints(DatabaseMetaData databaseMetaData, TableMetaData tableMetaData) throws SQLException {
         java.sql.DatabaseMetaData dbm = getConnection().getMetaData();
 
         List<ForeignKey> result = new ArrayList<>();
@@ -61,8 +84,8 @@ public abstract class DBDriverParent implements DBDriver {
 
                 TableName pkTableName = TableName.from(PKTABLE_CAT, PKTABLE_SCHEM, PKTABLE_NAME);
                 TableName fkTableName = TableName.from(FKTABLE_CAT, FKTABLE_SCHEM, FKTABLE_NAME);
-                FieldMetaData pkColumn = resolveField(tables, pkTableName, PKCOLUMN_NAME);
-                FieldMetaData fkColumn = resolveField(tables, fkTableName, FKCOLUMN_NAME);
+                FieldMetaData pkColumn = resolveField(databaseMetaData, pkTableName, PKCOLUMN_NAME);
+                FieldMetaData fkColumn = resolveField(databaseMetaData, fkTableName, FKCOLUMN_NAME);
                 if (KEY_SEQ == 1) {
                     result.add(ForeignKey.from(
                             ForeignKeyEdge.from(Optional.ofNullable(PK_NAME), pkTableName, Collections.singletonList(pkColumn)),
@@ -73,22 +96,23 @@ public abstract class DBDriverParent implements DBDriver {
             }
         }
 
-        resolveManualForeignConstraints(result, tables, tableMetaData);
+        resolveManualForeignConstraints(result, databaseMetaData, tableMetaData);
 
         return tableMetaData.constraints(result);
     }
 
-    protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, Map<TableName, TableMetaData> tables, TableMetaData tableMetaData) {
-        for (ForeignKeyType foreignKeyType : configuration.getManualForeignKeys().filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString())).collect(Collectors.<ForeignKeyType>toList())) {
-            foreignKeys.add(resolveForeignKey(tables, foreignKeyType));
-        }
+    protected void resolveManualForeignConstraints(List<ForeignKey> foreignKeys, DatabaseMetaData databaseMetaData, TableMetaData tableMetaData) {
+        foreignKeys.addAll(configuration.getManualForeignKeys()
+                .filter(x -> namesEqual(x.getFromTable(), tableMetaData.tableName().toString()))
+                .map(foreignKeyType -> resolveForeignKey(databaseMetaData, foreignKeyType))
+                .collect(Collectors.toList()));
     }
 
     protected boolean namesEqual(String filterFromName, String tableName) {
         return filterFromName.equals(tableName);
     }
 
-    private ForeignKey resolveForeignKey(Map<TableName, TableMetaData> tables, ForeignKeyType foreignKeyType) {
+    private ForeignKey resolveForeignKey(DatabaseMetaData databaseMetaData, ForeignKeyType foreignKeyType) {
         String[] fromKeys = foreignKeyType.getFromFields().split(",");
         String[] toKeys = foreignKeyType.getToFields().split(",");
 
@@ -99,30 +123,30 @@ public abstract class DBDriverParent implements DBDriver {
         return ForeignKey.from(
                 resolveForeignKeyEdge(
                         foreignKeyType.getFromName(),
-                        tables,
+                        databaseMetaData,
                         foreignKeyType.getFromTable(),
                         fromKeys),
                 resolveForeignKeyEdge(
                         foreignKeyType.getToName(),
-                        tables,
+                        databaseMetaData,
                         foreignKeyType.getToTable(),
                         toKeys));
     }
 
-    private ForeignKeyEdge resolveForeignKeyEdge(String name, Map<TableName, TableMetaData> tables, String qualifiedTableName, String[] fieldNames) {
+    private ForeignKeyEdge resolveForeignKeyEdge(String name, DatabaseMetaData databaseMetaData, String qualifiedTableName, String[] fieldNames) {
         TableName tableName = TableName.from(qualifiedTableName);
         return ForeignKeyEdge.from(
                 Optional.ofNullable(name),
                 tableName,
-                resolveFields(tables, tableName, fieldNames));
+                resolveFields(databaseMetaData, tableName, fieldNames));
     }
 
-    private Collection<FieldMetaData> resolveFields(Map<TableName, TableMetaData> tables, TableName tableName, String[] fieldNames) {
-        return Stream.of(fieldNames).map(x -> resolveField(tables, tableName, x)).collect(Collectors.<FieldMetaData>toList());
+    private Collection<FieldMetaData> resolveFields(DatabaseMetaData databaseMetaData, TableName tableName, String[] fieldNames) {
+        return Stream.of(fieldNames).map(x -> resolveField(databaseMetaData, tableName, x)).collect(Collectors.<FieldMetaData>toList());
     }
 
-    private FieldMetaData resolveField(Map<TableName, TableMetaData> tables, TableName tableName, String fieldName) {
-        return tables.get(tableName).field(fieldName).get();
+    private FieldMetaData resolveField(DatabaseMetaData databaseMetaData, TableName tableName, String fieldName) {
+        return databaseMetaData.get(tableName).field(fieldName).get();
     }
 
     protected Set<String> primaryKey(TableName tableName) throws SQLException {
@@ -153,18 +177,15 @@ public abstract class DBDriverParent implements DBDriver {
 
     protected abstract FieldMetaData fromColumnsResultSet(Set<String> primaryKeys, ResultSet resultSet) throws SQLException;
 
-    @Override
-    public Optional<String> getDBCatalogue() {
+    protected Optional<String> getDBCatalogue() {
         return configuration.getDBCatalogue();
     }
 
-    @Override
-    public Optional<String> getDBSchemaPattern() {
+    protected Optional<String> getDBSchemaPattern() {
         return configuration.getDBSchemaPattern();
     }
 
-    @Override
-    public Optional<String> getDBTablePattern() {
+    protected Optional<String> getDBTablePattern() {
         return configuration.getDBTablePattern();
     }
 }

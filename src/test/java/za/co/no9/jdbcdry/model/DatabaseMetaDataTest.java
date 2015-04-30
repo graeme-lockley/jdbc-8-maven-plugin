@@ -12,7 +12,7 @@ public class DatabaseMetaDataTest {
         Configuration configuration = Configuration.from(new File("src/test/resources/oracle-jsqldsl.xml"));
 
         DBDriver dbDriver = new Oracle();
-        dbDriver.setConfiguration(configuration, configuration.getJDBCConnection());
+        dbDriver.setConfiguration(configuration, configuration.establishJDBCConnection());
 
         DatabaseMetaData dbMetaData = DatabaseMetaData.from(dbDriver);
 
