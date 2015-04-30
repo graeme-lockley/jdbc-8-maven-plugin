@@ -3,6 +3,7 @@ package za.co.no9.jdbcdry.port.jsqldslmojo;
 import org.xml.sax.SAXException;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.DBSearchType;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeyType;
+import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeysType;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.JdbcType;
 
 import javax.xml.XMLConstants;
@@ -112,6 +113,7 @@ public class Configuration {
     }
 
     public Stream<ForeignKeyType> getManualForeignKeys() {
-        return xmlConfiguration.getSource().getForeignKeys().getForeignKey().stream();
+        ForeignKeysType foreignKeys = xmlConfiguration.getSource().getForeignKeys();
+        return foreignKeys == null ? Stream.empty() : foreignKeys.getForeignKey().stream();
     }
 }
