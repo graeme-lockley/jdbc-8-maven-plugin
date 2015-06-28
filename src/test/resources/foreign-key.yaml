@@ -41,3 +41,7 @@
    - alter table book_genres add primary key (book_id, genre_id)
    - alter table book_genres add constraint book_genres_fk1 foreign key (book_id) references books(id)
    - alter table book_genres add constraint book_genres_fk2 foreign key (genre_id) references genres(id)
+
+- jdbc-insert:
+   name: authors
+   rows: [{first_name: 'John Ronald Reuel', surname: 'Tolkien', creation_date: '1892-1-3'}, {first_name: 'Cressida', surname: 'Cowell', creation_date: '1966-4-15'}]

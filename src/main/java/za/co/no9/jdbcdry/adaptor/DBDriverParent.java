@@ -5,6 +5,7 @@ import za.co.no9.jdbcdry.port.jsqldslmojo.Configuration;
 import za.co.no9.jdbcdry.port.jsqldslmojo.configuration.ForeignKeyType;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -180,5 +181,24 @@ public abstract class DBDriverParent implements DBDriver {
 
     protected Optional<String> getDBTablePattern() {
         return configuration.getDBTablePattern();
+    }
+
+    @Override
+    public List<List<Object>> query(String query) throws SQLException {
+        List<List<Object>> results = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            int numberOfColumns = resultSet.getMetaData().getColumnCount();
+            while (resultSet.next()) {
+                List<Object> row = new ArrayList<>(numberOfColumns);
+                for (int column = 1; column <= numberOfColumns; column += 1) {
+                    row.add(resultSet.getObject(column));
+                }
+                results.add(row);
+            }
+        }
+
+        return results;
     }
 }
