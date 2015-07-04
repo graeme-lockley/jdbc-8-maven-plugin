@@ -28,4 +28,8 @@ public class DatabaseMetaData {
     public TableMetaData get(TableName tableName) {
         return tables.get(tableName);
     }
+
+    public TableMetaData get(String qualifiedTableName) {
+        return get(TableName.from(qualifiedTableName));
+    }
 }
