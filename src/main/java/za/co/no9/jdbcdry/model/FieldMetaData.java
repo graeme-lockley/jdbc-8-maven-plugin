@@ -33,6 +33,8 @@ public class FieldMetaData {
         return columnSize;
     }
 
+    public Optional<Integer> subWidth() { return subWidth; }
+
     public boolean isNullable() {
         return isNullable;
     }
